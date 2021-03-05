@@ -1,5 +1,5 @@
-starting_r = 0; %between -1 & 1
-starting_theta = 0.5;
+starting_r = -1; %between -1 & 1
+starting_theta = 0;
 
 figure();
 saved_agents = saved_agent; n = 1;
