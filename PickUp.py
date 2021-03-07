@@ -13,11 +13,11 @@ import numpy
 import socket
 import sys
 
-sys.path.append("C:/Users/David/Documents/PhD/ur5control")
+sys.path.append(r"C:\Users\44772\Documents\dsh46WaterControl\ur5control")
 import waypoints as wp
 import kg_robot as kgr
 
-urnie = kgr.kg_robot(port=30010,db_host="169.254.161.50")
+urnie = kgr.kg_robot(port=30010,db_host="169.254.129.254")
 urnie.set_tcp(wp.plunger_tcp)
 
 #assume alignment of theta=0 and positive x axis
@@ -30,45 +30,46 @@ x_des = 0.001*float(sys.argv[3])*numpy.cos(float(sys.argv[4]))
 y_des = 0.001*float(sys.argv[3])*numpy.sin(float(sys.argv[4]))
 
 urnie.set_tool_digital_out(0,1) #turn electromagnet on
-centre = numpy.add(wp.above_tubl, [x, y, 0, 0, 0, 0])
+centre = numpy.add(wp.reset_above_tubl, [x, y, 0, 0, 0, 0])
 
 # if object couldn't be found, trace edge of tub
 if (float(sys.argv[1]) > 190):
-    urnie.movel(numpy.add(wp.above_tubl, [0.16, 0, 0.05, 0, 0, 0]),0.1, 0.1)
+    print("Tracing Edge\r\n")
+    urnie.movel(numpy.add(wp.reset_above_tubl, [0.16, 0, 0.05, 0, 0, 0]),0.1, 0.1)
     for i in range(50):
-        x_r = 0.17*numpy.cos(i*pi/25)
-        y_r = 0.17*numpy.sin(i*pi/25)
-        urnie.movel(numpy.add(wp.above_tubl, [x_r, y_r, 0, 0, 0, 0]),0.05, 0.05)
+        x_r = 0.172*numpy.cos(i*pi/25)
+        y_r = 0.172*numpy.sin(i*pi/25)
+        urnie.movel(numpy.add(wp.reset_above_tubl, [x_r, y_r, -0.004, 0, 0, 0]),0.01, 0.01)
 
 #if object near middle of tub, trace locally
 elif (float(sys.argv[1]) < 130):
-    urnie.movel(numpy.add(wp.above_tubl,
+    urnie.movel(numpy.add(wp.reset_above_tubl,
                           [0.001*float(sys.argv[1])*numpy.cos(float(sys.argv[2]) - pi/4),
                            0.001*float(sys.argv[1])*numpy.sin(float(sys.argv[2]) - pi/4),
                            0.05, 0, 0, 0]),0.1, 0.1)
     for i in range(10):
         x_r = 0.001*float(sys.argv[1])*numpy.cos(float(sys.argv[2]) - pi/4 + i*pi/20)
         y_r = 0.001*float(sys.argv[1])*numpy.sin(float(sys.argv[2]) - pi/4 + i*pi/20)
-        urnie.movel(numpy.add(wp.above_tubl, [x_r, y_r, 0, 0, 0, 0]),0.05, 0.05)
+        urnie.movel(numpy.add(wp.reset_above_tubl, [x_r, y_r, -0.002, 0, 0, 0]),0.05, 0.05)
     for i in range(2):
         for j in range(5):
             urnie.movel(numpy.add(centre, [i*0.025*numpy.sin(j*0.4*pi),
                                            i*0.025*numpy.cos(j*0.4*pi),
-                                            0, 0, 0, 0]), 0.05, 0.05)
+                                            -0.003, 0, 0, 0]), 0.05, 0.05)
     
 #if object near edge of tub, trace local area of edge
 else:
-    urnie.movel(numpy.add(wp.above_tubl,
+    urnie.movel(numpy.add(wp.reset_above_tubl,
                           [0.16*numpy.cos(float(sys.argv[2]) - pi/5),
                            0.16*numpy.sin(float(sys.argv[2]) - pi/5),
                            0.05, 0, 0, 0]),acc=0.1, vel=0.1)
     for i in range(10):
-        x_r = 0.17*numpy.cos(float(sys.argv[2]) - pi/10 + i*pi/50)
-        y_r = 0.17*numpy.sin(float(sys.argv[2]) - pi/10 + i*pi/50)
-        urnie.movel(numpy.add(wp.above_tubl, [x_r, y_r, 0, 0, 0, 0]),acc=0.01, vel=0.01)
+        x_r = 0.172*numpy.cos(float(sys.argv[2]) - pi/10 + i*pi/50)
+        y_r = 0.172*numpy.sin(float(sys.argv[2]) - pi/10 + i*pi/50)
+        urnie.movel(numpy.add(wp.reset_above_tubl, [x_r, y_r, -0.004, 0, 0, 0]),acc=0.01, vel=0.01)
 
 #move to desired position
-urnie.movel(numpy.add(wp.above_tubl, [x_des, y_des, 0, 0, 0, 0]),
+urnie.movel(numpy.add(wp.reset_above_tubl, [x_des, y_des, 0, 0, 0, 0]),
             acc=0.01, vel=0.01)
 
 time.sleep(5) #let settle
@@ -87,6 +88,6 @@ while ((time.time() - t) < 1.5):
     urnie.movel(lowerpose, 500, 50, min_time=period/2);
 """
 
-urnie.movel(wp.above_tubl, 0.05, 0.05) #return to starting position
+urnie.movel(wp.reset_above_tubl, 0.05, 0.05) #return to starting position
 
 urnie.close() #disconnect
