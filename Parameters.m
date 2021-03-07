@@ -46,19 +46,19 @@ classdef Parameters
         end
         
         function performnormalised(self,duration)
-            %lowerlimits = [0; 0; 0; 0; 0; 0; 0; 0; 5; -20; -20];
-            %upperlimits = [5; 6; 360; 5; 6; 360; 5; 6; 50; 20; 20];
-            mxamp = 2.5*(self.xamp+1);
-            mxfreq = 3*(self.xfreq+1);
+            %lowerlimits = [0; 0; 0; 0; 0; 0; 0; 0; 5; -10; -10];
+            %upperlimits = [4; 5; 360; 4; 5; 360; 4; 5; 50; 10; 10];
+            mxamp = 2*(self.xamp+1);
+            mxfreq = 2.5*(self.xfreq+1);
             mxphase = 180*(self.xphase+1);
-            myamp = 2.5*(self.yamp+1);
-            myfreq = 3*(self.yfreq+1);
+            myamp = 2*(self.yamp+1);
+            myfreq = 2.5*(self.yfreq+1);
             myphase = 180*(self.yphase+1);
-            mzamp = 2.5*(self.zamp+1);
-            mzfreq = 3*(self.zfreq+1);
-            mdepth = 22.5*(self.depth+1) + 5;
-            manglex = 20*self.anglex;
-            mangley = 20*self.angley;
+            mzamp = 2*(self.zamp+1);
+            mzfreq = 2.5*(self.zfreq+1);
+            mdepth = 20*(self.depth+1) + 5;
+            manglex = 10*self.anglex;
+            mangley = 10*self.angley;
             command = 'start python Call11D.py ' + string(mxamp)...
                     + ' ' + string(mxfreq) + ' ' + string(mxphase)...
                     + ' ' + string(myamp) + ' ' + string(myfreq)...
