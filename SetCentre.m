@@ -28,4 +28,13 @@ function [worldcentre, imagecentre] = SetCentre(I, cameraParams)
     imshow(I);
     hold on
     viscircles(imagecentre, 5, 'color', 'r');
+    
+    for i = 1:50
+        point = worldToImage(cameraParams.Intrinsics,...
+            cameraParams.RotationMatrices(:,:,1),...
+            cameraParams.TranslationVectors(1,:),...
+            [worldcentre(1)+170*sin(2*i*pi/50)...
+            worldcentre(2)+170*cos(2*i*pi/50) 0]);
+        viscircles(point, 5, 'color', 'r');
+    end
 end
