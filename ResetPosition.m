@@ -1,6 +1,7 @@
-function ResetPosition(r_d, theta_d)
-    global cam cameraParams worldcentre imagecentre
+function ResetPosition(r_d, theta_d, cam,cameraParams,worldcentre,imagecentre)
+    %global cam cameraParams worldcentre imagecentre
     %assuming alignment of axes
+    %{
     if nargin == 2
         r_des = r_d;
         theta_des = theta_d;
@@ -8,6 +9,9 @@ function ResetPosition(r_d, theta_d)
         r_des = 120; %mm
         theta_des = pi/2; %radians
     end
+    %}
+    r_des = r_d;
+    theta_des = theta_d;
     
     
     %% locate object

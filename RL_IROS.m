@@ -10,27 +10,32 @@ ObservationInfo.Description = 'disc_r, disc_theta, desired_theta';
 
 ur5variables = ["xamp" "xfreq" "xphase" "yamp" "yfreq" "yphase" "zamp"...
     "zfreq" "depth" "anglex" "angley"];
-%lowerlimits = [0; 0; 0; 0; 0; 0; 0; 0; 5; -20; -20];
-%upperlimits = [5; 6; 360; 5; 6; 360; 5; 6; 50; 20; 20];
+%lowerlimits = [0; 0; 0; 0; 0; 0; 0; 0; 5; -10; -10; 3.38e-5];
+%upperlimits = [4; 5; 360; 4; 5; 360; 4; 5; 50; 10; 10; 0.921];
 lowerlimits = -1*ones(11,1);
 upperlimits = 1*ones(11,1);
 
 ActionInfo = rlNumericSpec([numAct 1],'LowerLimit',lowerlimits,'UpperLimit',upperlimits); % Number of actions and range
 ActionInfo.Name = 'Action';
 ActionInfo.Description = ur5variables;
-
+%{
 %avoid issues with global variables by creating local copies
 cam2 = cam;
 cameraParams2 = cameraParams;
 worldcentre2 = worldcentre;
 imagecentre2 = imagecentre;
+%}
+
+%saved_agent = agent;
 
 %use handles to pass additional arguments
-resethandle = @()reset_IROS(cam2,cameraParams2, worldcentre2, imagecentre2);
+%load('Motions/RL/EnvVariables.mat');
+resethandle = @()reset_IROS(cam,cameraParams, worldcentre, imagecentre);
 stephandle = @(Action,LoggedSignals) ...
-    step_IROS(Action,LoggedSignals,cam2,cameraParams2, worldcentre2, imagecentre2);
+    step_IROS(Action,LoggedSignals,cam,cameraParams, worldcentre, imagecentre);
 
 env = rlFunctionEnv(ObservationInfo,ActionInfo,stephandle,resethandle);
+%trainingStats = train(saved_agent,env,trainOpts);
 
 %TO TEST ENVIRONMENT 
 %env.step([1 1])
@@ -57,7 +62,7 @@ criticNetwork = addLayers(criticNetwork,commonPath);
     
 criticNetwork = connectLayers(criticNetwork,'CriticStateFC2','add/in1');
 criticNetwork = connectLayers(criticNetwork,'CriticActionFC1','add/in2');
-criticOpts = rlRepresentationOptions('LearnRate',1e-03*10,'GradientThreshold',10); %VARIABLE LR DEFAULT 0.1
+criticOpts = rlRepresentationOptions('LearnRate',0.01,'GradientThreshold',10); %VARIABLE LR DEFAULT 0.01
 obsInfo = getObservationInfo(env);
 actInfo = getActionInfo(env);
 critic = rlQValueRepresentation(criticNetwork,obsInfo,actInfo,'Observation',{'observation'},'Action',{'action'},criticOpts);
@@ -73,7 +78,7 @@ actorNetwork = [
     tanhLayer('Name','ActorTanh')
     scalingLayer('Name','ActorScaling','Scale',max(actInfo.UpperLimit))];
 
-actorOpts = rlRepresentationOptions('LearnRate',1e-04*10);%,'GradientThreshold',10); %VARIABLE LR must be smaller than critic
+actorOpts = rlRepresentationOptions('LearnRate',0.001);%,'GradientThreshold',10); %VARIABLE LR must be smaller than critic
 %actorOpts = rlRepresentationOptions();
 
 actor = rlDeterministicActorRepresentation(actorNetwork,obsInfo,actInfo,'Observation',{'observation'},'Action',{'ActorScaling'},actorOpts);
@@ -86,9 +91,9 @@ agentOpts = rlDDPGAgentOptions(...
     'NumStepsToLookAhead',1,...
     'ResetExperienceBufferBeforeTraining',0,...
     'SaveExperienceBufferWithAgent',1,...
-    'MiniBatchSize',32); %VARIABLES %discount factor default 0.99 %was 0.6
-%agentOpts.NoiseOptions.Variance = 0.6; %VARIABLE %default 0.3 %different for action
-%agentOpts.NoiseOptions.VarianceDecayRate = 1e-5*100; %VARIABLE default 0 %different for each action
+    'MiniBatchSize',64); %VARIABLES %discount factor default 0.99 %was 0.6
+agentOpts.NoiseOptions.Variance = 0.3; %changed 12.02%VARIABLE %default 0.3 %different for action
+agentOpts.NoiseOptions.VarianceDecayRate = 0.0033954; %changed 12.02%VARIABLE default 0 %different for each action
 
 agent = rlDDPGAgent(actor,critic,agentOpts);
 
