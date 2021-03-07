@@ -38,6 +38,9 @@ ylim([-2 3]);
 title("Reward");
 legend({'Actual';'Predicted'});
 
+figure()
+scatter(abs(simstates(:,3)-simstates(:,2)),simrewards, 'o');
+
 %% Simulated Testing
 
 n = 50;
@@ -61,10 +64,9 @@ for i = 1:11
     ylim([-1 1]);
     title(ur5variables(i));
 end
-%{
+
 subplot(4,3,12);
 plot(rewards);
 ylim([-2 3]);
 hold on;
-%}
 %title("Reward");
