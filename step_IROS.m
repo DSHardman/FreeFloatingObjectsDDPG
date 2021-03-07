@@ -1,5 +1,6 @@
-function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,cam,cameraParams,worldcentre,imagecentre)
+function [NextObs,Reward,IsDone,LoggedSignals, results] = step_IROS(Action,LoggedSignals,cam,cameraParams,worldcentre,imagecentre)
     %global cam cameraParams worldcentre imagecentre
+    preview(cam)
     Action
     State = LoggedSignals
     tic;
@@ -9,11 +10,12 @@ function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,
     r_outer = 160; %THIS WILL CHANGE WITH MORPHOLOGY
     
     % Saving: search folder for files using current stub, and add 1 to name
-    sv = 1; %save
+    sv = 0; %save
+    %{
     filestub = 'RL';
-    cd 'C:\Users\David\Documents\PhD\Water Control\Motions\RL'
+    cd 'C:\Users\44772\Documents\dsh46WaterControl\Motions\RL'
     contents = dir;
-    cd 'C:\Users\David\Documents\PhD\Water Control'
+    cd 'C:\Users\44772\Documents\dsh46WaterControl'
     M = NaN;
     for i = size(contents,1)
         if ~isempty(strfind(contents(i).name,filestub))
@@ -26,6 +28,7 @@ function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,
     else
         filename = strcat(filestub,string(M+1));
     end
+    %}
     
     %%
     % tracking view
@@ -70,7 +73,7 @@ function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,
             %exit when outer radius reached
             if r >= r_outer && n > 1
                 outflag = 1;
-                system('taskkill /F /IM "python.exe" /T');
+                system('taskkill /F /IM "python3.9.exe" /T');
                 fprintf('Reached Edge: n = %d\n', n);
                 break
             end
@@ -78,6 +81,7 @@ function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,
             
             n = n + 1;
         end
+        drawnow('update');
 
     end
     close(g)
@@ -89,13 +93,14 @@ function [NextObs,Reward,IsDone,LoggedSignals] = step_IROS(Action,LoggedSignals,
     
     %calculate reward
     Reward = reward_IROS(State, results, outflag)
+    %Reward = reward2_IROS(State, Action, results, outflag)
     %pause(5);
     drawnow('update')
     
     
     %optionally save results
     if sv
-        matname = strcat('C:\Users\David\Documents\PhD\Water Control\Motions\RL\',filename,'.mat');
+        matname = strcat('C:\Users\44772\Documents\dsh46WaterControl\Motions\RL\RL',datestr(now,'mm-dd-yyyy HH-MM'),'.mat');
         save(matname, 'results');
     end
     
