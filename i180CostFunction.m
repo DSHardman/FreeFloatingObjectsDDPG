@@ -1,5 +1,5 @@
-function cost = i180CostFunction(x, cam,cameraParams,worldcentre,imagecentre)
-    %global cam cameraParams worldcentre imagecentre
+function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
+    global cam cameraParams worldcentre imagecentre
     preview(cam)
     params = Parameters(x.xamp, x.xfreq, x.xphase,...
         x.yamp, x.yfreq, x.yphase, x.zamp, x.zfreq,...
@@ -22,6 +22,7 @@ function cost = i180CostFunction(x, cam,cameraParams,worldcentre,imagecentre)
     %assume up to 5Hz tracking rate
     results = zeros(TrackingPeriod/0.2, 3);
 
+    tic
     params.performnormalised(TrackingPeriod); %start plunger moving
     while toc < 5
         continue
@@ -90,19 +91,23 @@ function cost = i180CostFunction(x, cam,cameraParams,worldcentre,imagecentre)
         mindist = min([mindist dist 3000]);
     end
     
-    mindist = min([mindist 3000]);
     
-    cost = results(end,1) + mindist;
-
+    if (size(results, 1) < 5)
+        cost = 500;
+    else
+        mindist = min([mindist 3000]);
+        cost = results(end,1) + mindist;
+    end
     
-    if (size(results, 1) < 5) || cost < 0.4
+    if cost < 0.4
         cost = 500;
     end
+    
     %pause();
     pause(2);
     drawnow('update')
     
-    ResetPosition(90,pi/4,cam,cameraParams,worldcentre,imagecentre) %reset floating object
+    ResetPosition(90,3*pi/4,cam,cameraParams,worldcentre,imagecentre) %reset floating object
     
     %optionally save results
     if sv

@@ -11,17 +11,20 @@ v9 = optimizableVariable('depth',[-1 1],'Type', 'real');
 v10 = optimizableVariable('anglex',[-1 1],'Type', 'real');
 v11 = optimizableVariable('angley',[-1 1],'Type', 'real');
 
-savename = 'Motions\Bayesian\i180Opt100.mat';
+%savename = 'Motions\Bayesian\i180Opt100.mat';
+savename = 'Motions\Bayesian\i90Opt100.mat';
 
 %run optimization
-ResetPosition(90,pi/4,cam,cameraParams,worldcentre,imagecentre)
+ResetPosition(90,3*pi/4,cam,cameraParams,worldcentre,imagecentre)
 
-bayesianhandle = @(x)i180CostFunction(x, cam,cameraParams, worldcentre, imagecentre);
+%bayesianhandle = @(x)i180CostFunction(x, cam,cameraParams, worldcentre, imagecentre);
+
+bayesianhandle = @(x)i180CostFunction(x);
 
 results = bayesopt(bayesianhandle,...
     [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11],...
     'Verbose',1,...
-    'MaxObjectiveEvaluations',200,...
+    'MaxObjectiveEvaluations',1000,...
     'MaxTime',10*3600,...
 	'OutputFcn',@saveToFile,...
     'SaveFileName',savename);
