@@ -1,8 +1,8 @@
-breakpoints = [300 2000];
+breakpoints = [1448 1461 1668 1946 2481 4119];
 ylims = [-2 5];
 xlims = [0 4500];
-save = 1;
-savename = 'training'
+save = 0;
+savename = 'training';
 
 figure('Position', [300 200 1200 600])
 
@@ -21,7 +21,7 @@ breakpoints = [xlims(1) breakpoints xlims(2)];
 if length(breakpoints) > 2
     for i = 2:length(breakpoints)
         line([breakpoints(i) breakpoints(i)], [-2 -1.5], 'color', 'k', 'LineWidth', 2);
-        text((breakpoints(i)+breakpoints(i-1))/2, ylims(1)+0.4, char(63+i), 'FontSize', 15);
+        text(breakpoints(i-1)+30, ylims(1)+0.4, char(63+i), 'FontSize', 15);
     end
 end
 
