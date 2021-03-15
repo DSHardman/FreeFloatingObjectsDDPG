@@ -68,39 +68,21 @@ classdef RepeatingResults < handle
             end
         end
         
-       function plotOverlays(obj, visible, savename)
+       function plotOverlays(obj)
             for num = 1:obj.m
-                figure()
+            subplot(2,5,num);
                 for i = 1:10
                     obj.Paths(num,i).plotPath;
                     hold on
                 end
 
-                %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
-                [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
-                h = viscircles([x y], 7, 'Color', 'k');
+                [x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
+                h = viscircles([x y], 5, 'Color', 'k');
                 fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
-               
-                %[x, y] = pol2cart(pi/2*(obj.States(num,2)+1) + pi/4, 65*(obj.States(num1,1)+1) + 40);
-                [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1) + 40);
-                
-                %rectangle('Position',[x-6 y-6 12 12], 'FaceColor','k','EdgeColor','w')
-                scatter(x, y, 150, 'k', 'x', 'LineWidth', 3)
-                %h = viscircles([x y], 5, 'Color', 'k');
-                %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
-                
                 axis square
                 set(gca,'XColor', 'none','YColor','none')
-                %set(gca, 'Color', 'None');
-                %set(gcf, 'Color', 'None');
-                if nargin == 3
-                    exportgraphics(gcf, "AutosavedFigures/"+...
-                        savename+string(num)+".eps", 'ContentType',...
-                        'vector', 'BackgroundColor', 'none');
-                end
-                if ~visible
-                    close
-                end
+                
+                viscircl
             end
         end
        

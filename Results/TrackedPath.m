@@ -38,9 +38,12 @@ classdef TrackedPath
         end
         
         function plotPath(obj)
-            plot(obj.xvec, obj.yvec, 'Color', 'r');
-            viscircles([0 0], 20, 'Color', 'k');
-            viscircles([0 0], 165, 'Color', 'k','LineStyle', '--');
+            [theta, r] = cart2pol(obj.xvec, obj.yvec);
+            [x, y] = pol2cart(-(theta-pi/4), r);
+            plot(x, y, 'LineWidth', 2);%, 'Color', 'r');       
+            h = viscircles([0 0], 20, 'Color', 'k');
+            fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            viscircles([0 0], 165, 'Color', 'k');%,'LineStyle', '--');
         end
         
         function length = getLength(obj)
