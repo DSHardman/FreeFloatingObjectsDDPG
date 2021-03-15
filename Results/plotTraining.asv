@@ -1,0 +1,27 @@
+breakpoints = [300 2000];
+ylim = [-2 5];
+xlim = [0 450
+
+figure('Position', [300 200 1200 600])
+
+plot(nan,'Color',[0.5 0.1 0],'LineWidth',2);
+hold on
+plot(nan,'Color','k','LineWidth',2);
+
+plot(rewards, 'color', [0.7 0.7 0.7]);
+plot(qs, 'color', [0.7 0.4 0]);
+
+plot(smooth(qs,100),'Color',[0.5 0.1 0],'LineWidth',2);
+plot(smooth(rewards,100),'Color','k','LineWidth',2);
+
+for i = 1:length(breakpoints)
+    line([breakpoints(i) breakpoints(i)], [-2 -1.5], 'color', 'k', 'LineWidth', 2);
+end
+
+box off
+ylim([-2 5])
+set(gca, 'FontSize', 15, 'LineWidth',2);
+xlabel('Iterations');
+ylabel('Reward');
+legend(["Predicted" "Actual"], 'Orientation', 'Horizontal', 'Location', 'nw');
+legend boxoff
