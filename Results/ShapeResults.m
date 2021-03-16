@@ -149,6 +149,88 @@ classdef ShapeResults < handle
             sgtitle('Errors')
         end
         
+        function compareHeatMaps(obj, agent, save, savename)
+        % NOTE THAT THIS FUNCTION SHIFTS THE RADIUS VALUES.    
+            limits = [-1.25 2.25];
+            
+            %Predictions
+            rbins = 4;
+            thetabins = 10;
+            predictiondata = NaN(thetabins,thetabins,rbins,1);
+            mcritic = agent.getCritic();
+            for rplot = 1:rbins
+                for tf = 1:thetabins
+                    for ts = 1:thetabins
+                        state = [(12/13)*((rplot-1)/(rbins-1))-1;...
+                            (2*(ts-1)/(thetabins-1))-1;...
+                            (2*(tf-1)/(thetabins-1))-1];
+                        action = cell2mat(getAction(agent,state));
+                        predictiondata(ts,tf,rplot,1) = mcritic.getValue(state, action);
+                    end
+                end
+            end
+            figure('Position', [200 200 1300 600]);
+            for i = 1:rbins
+                subplot(2,rbins,i);
+                heatmap(-1+(1/thetabins):(2/thetabins):1-(1/thetabins),...
+                    1-(1/thetabins):-(2/thetabins):-1+(1/thetabins),...
+                    flipud(predictiondata(:,:,i,1)),...
+                    'ColorbarVisible','off', 'GridVisible','off',...
+                    'CellLabelColor','none');
+                %xlabel('\theta_{start}');
+                %ylabel('\theta_{target}');
+                %title(strcat(string(2*(i-1)/rbins - 1), " < r < ", string(2*i/rbins - 1)))
+                colormap parula
+                caxis(limits);
+                Ax = gca;
+                Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
+                Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
+            end
+            
+            %Actual
+            thetabins = 5;
+            rewarddata = NaN(thetabins,thetabins,rbins);
+            number_so_far = zeros(thetabins,thetabins,rbins);
+            for i = 1:obj.n
+                rplot = max(1,ceil(((min((13/6)*(obj.States(i,1)+1)-1,1)+1)/2)*rbins));
+                ts = max(1,ceil(((min(obj.States(i,2),1)+1)/2)*thetabins));
+                tf = max(1,ceil(((min(obj.States(i,3),1)+1)/2)*thetabins));
+                if isnan(rewarddata(ts,tf,rplot))
+                    rewarddata(ts,tf,rplot) = obj.Rewards(i);
+                    number_so_far(ts,tf,rplot) = 1;
+                else
+                    rewarddata(ts,tf,rplot) = obj.Rewards(i) + rewarddata(ts,tf,rplot);
+                    number_so_far(ts,tf,rplot) = number_so_far(ts,tf,rplot) + 1;
+                end
+            end
+            rewarddata = rewarddata./number_so_far;
+            
+            for i = 1:rbins
+                subplot(2,rbins,i+rbins);
+                heatmap(-1+(1/thetabins):(2/thetabins):1-(1/thetabins),...
+                    1-(1/thetabins):-(2/thetabins):-1+(1/thetabins),...
+                    flipud(rewarddata(:,:,i)), 'ColorbarVisible','off',...
+                    'GridVisible','off', 'CellLabelColor','none');
+                colormap parula
+                caxis(limits);
+                Ax = gca;
+                Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
+                Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
+            end
+            
+            %ylabel('\theta_{target}');
+            %xlabel('\theta_{start}');
+            
+            if nargin == 4
+                if save
+                    exportgraphics(gcf, "AutosavedFigures/"+...
+                        savename+".eps", 'ContentType',...
+                        'vector', 'BackgroundColor', 'none');
+                end
+            end
+            
+        end
+       
         function pathLengths(obj)
             lengths = zeros(obj.n,1);
             for i = 1:obj.n
