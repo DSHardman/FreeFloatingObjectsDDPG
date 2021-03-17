@@ -1,6 +1,6 @@
-breakpoints = [1448 1946 2481 4119];
+breakpoints = [1448 1946 2481];
 ylims = [-2 4];
-xlims = [0 5500];
+xlims = [0 5000];
 save = 0;
 savename = 'training';
 
@@ -11,12 +11,15 @@ hold on
 plot(nan,'Color','k','LineWidth',2);
 
 rew_std = movstd(rewards, 500);
-inBetween = [[smooth(rewards,100)+rew_std].', [flipud(smooth(rewards,100)-rew_std)].'];
-fill([1:length(rew_std), fliplr(1:length(rew_std))], inBetween, [0.7 0.7 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
+inBetween = [[smooth(rewards,100)+rew_std].',...
+    [flipud(smooth(rewards,100)-rew_std)].'];
+fill([1:length(rew_std), fliplr(1:length(rew_std))], inBetween,...
+    [0.7 0.7 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
 
 q_std = movstd(qs, 500);
 inBetween = [[smooth(qs,100)+q_std].', [flipud(smooth(qs,100)-q_std)].'];
-fill([1:length(q_std), fliplr(1:length(q_std))], inBetween, [0.7 0.4 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
+fill([1:length(q_std), fliplr(1:length(q_std))], inBetween,...
+    [0.7 0.4 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
 
 %plot(rewards, 'color', [0.7 0.7 0.7]);
 %plot(qs, 'color', [0.7 0.4 0]);
