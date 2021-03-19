@@ -155,7 +155,7 @@ classdef ShapeResults < handle
             
             %Predictions
             rbins = 4;
-            thetabins = 10;
+            thetabins = 15;
             predictiondata = NaN(thetabins,thetabins,rbins,1);
             mcritic = agent.getCritic();
             for rplot = 1:rbins
@@ -188,7 +188,7 @@ classdef ShapeResults < handle
             end
             
             %Actual
-            thetabins = 5;
+            thetabins = 7;
             rewarddata = NaN(thetabins,thetabins,rbins);
             number_so_far = zeros(thetabins,thetabins,rbins);
             for i = 1:obj.n

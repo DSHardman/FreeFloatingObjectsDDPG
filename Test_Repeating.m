@@ -12,9 +12,11 @@ Predictions = zeros(n,1);
 
 for i = 1:n
     %[~, LoggedSignal] = reset_IROS(cam, cameraParams, worldcentre, imagecentre);
-    LoggedSignal = [-(3/13); -1; 1]; % 180deg bayesian optimisation case
+    %LoggedSignal = [-(3/13); -1; 1]; % 180deg bayesian optimisation case
     %LoggedSignal = [-(3/13); -1; 0]; % 90deg bayesian optimisation case
     %LoggedSignal = [-9/13; 0; 0];  % 0deg bayesian optimisation case
+    %LoggedSignal = [-11/13; 0.4; -0.4];  % Case A
+    LoggedSignal = [-5/13; 0.5; 0.8];  % Case B
     
     Action = double(cell2mat(saved_agent.getAction(LoggedSignal)));
     Actions(i,:) = Action.'; 
