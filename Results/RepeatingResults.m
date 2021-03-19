@@ -68,49 +68,57 @@ classdef RepeatingResults < handle
             end
         end
         
-       function plotOverlays(obj, visible, savename)
-            for num = 1:1%obj.n
-                figure()
-                for i = 1:4
-                    theta = (i-1)*pi/4;
-                    viscircles([0 0], i*165/4, 'Color', [0.5 0.5 0.5], 'LineWidth', 0.5);
-                    line([-165*cos(theta) 165*cos(theta)], [165*sin(theta) -165*sin(theta)], 'Color', [0.5 0.5 0.5]);
-                    hold on
-                end
-                %viscircles([0 0], 165, 'Color', 'k', 'LineWidth', 1);
+        function plotOverlay(obj, num, visible, savename)
+            for i = 1:4
+                theta = (i-1)*pi/4;
+                viscircles([0 0], i*165/4, 'Color', [0.5 0.5 0.5], 'LineWidth', 0.5);
+                line([-165*cos(theta) 165*cos(theta)], [165*sin(theta) -165*sin(theta)], 'Color', [0.5 0.5 0.5]);
                 hold on
-                
-                %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
-                [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
-                scatter(x, y, 150, 'k', '*', 'LineWidth', 3);
-                %h = viscircles([x y], 7, 'Color', 'k');
-                %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
-                
-                for i = 1:obj.m
-                        obj.Paths(num,i).plotPath(1);
-                        hold on
-                end
+            end
+            %viscircles([0 0], 165, 'Color', 'k', 'LineWidth', 1);
+            hold on
 
-               
-                %[x, y] = pol2cart(pi/2*(obj.States(num,2)+1) + pi/4, 65*(obj.States(num1,1)+1) + 40);
-                %[x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1) + 40);
-                
-                %rectangle('Position',[x-6 y-6 12 12], 'FaceColor','k','EdgeColor','w')
-                %scatter(x, y, 150, 'k', 'x', 'LineWidth', 3)
-                %h = viscircles([x y], 5, 'Color', 'k');
-                %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
-                
-                axis square
-                set(gca,'XColor', 'none','YColor','none')
-                %set(gca, 'Color', 'None');
-                %set(gcf, 'Color', 'None');
+            %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
+            [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
+            scatter(x, y, 150, 'k', '*', 'LineWidth', 3);
+            %h = viscircles([x y], 7, 'Color', 'k');
+            %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+
+            for i = 1:obj.m
+                    obj.Paths(num,i).plotPath(1);
+                    hold on
+            end
+
+
+            %[x, y] = pol2cart(pi/2*(obj.States(num,2)+1) + pi/4, 65*(obj.States(num1,1)+1) + 40);
+            %[x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1) + 40);
+
+            %rectangle('Position',[x-6 y-6 12 12], 'FaceColor','k','EdgeColor','w')
+            %scatter(x, y, 150, 'k', 'x', 'LineWidth', 3)
+            %h = viscircles([x y], 5, 'Color', 'k');
+            %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+
+            axis square
+            set(gca,'XColor', 'none','YColor','none')
+            %set(gca, 'Color', 'None');
+            %set(gcf, 'Color', 'None');
+            if nargin == 4
+                exportgraphics(gcf, "AutosavedFigures/"+...
+                    savename+string(num)+".eps", 'ContentType',...
+                    'vector', 'BackgroundColor', 'none');
+            end
+            if ~visible
+                close
+            end
+        end
+        
+        function plotOverlays(obj, visible, savename)
+            figure();
+            for i = 1:obj.n
                 if nargin == 3
-                    exportgraphics(gcf, "AutosavedFigures/"+...
-                        savename+string(num)+".eps", 'ContentType',...
-                        'vector', 'BackgroundColor', 'none');
-                end
-                if ~visible
-                    close
+                    obj.plotOverlay(i, visible, savename);
+                else
+                    obj.plotOverlay(i, visible);
                 end
             end
         end

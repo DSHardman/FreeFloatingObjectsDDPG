@@ -39,11 +39,13 @@ classdef TrackedPath
         
         function plotPath(obj, lineonly)
             [theta, r] = cart2pol(obj.xvec, obj.yvec);
-            [x, y] = pol2cart(-(theta-pi/4), min(r, 165));
+            %[x, y] = pol2cart(-(theta-pi/4), min(r, 165));
+            [x, y] = pol2cart(theta, min(r, 165));
             p = plot(smooth(x,10), smooth(y,10), 'LineWidth', 1.5, 'Color', [0 0.2 0.6]);
-            p.Color(4) = 0.2;
-            c = get(p,'Color');
-            scatter(x(end), y(end), 50, c, '*', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
+            %p.Color(4) = 0.2;
+            %c = get(p,'Color');
+            %hold on
+            %scatter(x(end), y(end), 50, c, '*', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
             %h = viscircles([0 0], 20, 'Color', 'k');
             %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
             if nargin == 1 || ~lineonly

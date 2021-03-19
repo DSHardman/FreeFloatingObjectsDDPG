@@ -188,7 +188,7 @@ classdef ShapeResults < handle
             end
             
             %Actual
-            thetabins = 7;
+            thetabins = 6;
             rewarddata = NaN(thetabins,thetabins,rbins);
             number_so_far = zeros(thetabins,thetabins,rbins);
             for i = 1:obj.n
@@ -252,7 +252,7 @@ classdef ShapeResults < handle
         end
         
         function allPaths(obj)
-            for i = 1:obj.n
+            for i = 858:obj.n
                 obj.plotPath(i);
                 pause()
             end

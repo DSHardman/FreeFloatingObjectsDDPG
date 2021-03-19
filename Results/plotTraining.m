@@ -1,5 +1,5 @@
 breakpoints = [1448 1946 2481];
-ylims = [-2 4];
+ylims = [-2 3];
 xlims = [0 5000];
 save = 0;
 savename = 'training';
@@ -24,8 +24,10 @@ fill([1:length(q_std), fliplr(1:length(q_std))], inBetween,...
 %plot(rewards, 'color', [0.7 0.7 0.7]);
 %plot(qs, 'color', [0.7 0.4 0]);
 
-plot(smooth(qs,100),'Color',[0.5 0.1 0],'LineWidth',2);
-plot(smooth(rewards,100),'Color','k','LineWidth',2);
+sq = smooth(qs,100);
+plot(sq(1:end-1),'Color',[0.5 0.1 0],'LineWidth',2);
+sr = smooth(rewards,100);
+plot(sr(1:end-1),'Color','k','LineWidth',2);
 
 
 breakpoints = [xlims(1) breakpoints];
