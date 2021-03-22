@@ -69,29 +69,31 @@ classdef RepeatingResults < handle
         end
         
         function plotOverlay(obj, num, visible, savename)
+            global plottingcolor
+            %{
             for i = 1:4
                 theta = (i-1)*pi/4;
-                viscircles([0 0], i*165/4, 'Color', [0.5 0.5 0.5], 'LineWidth', 0.5);
-                line([-165*cos(theta) 165*cos(theta)], [165*sin(theta) -165*sin(theta)], 'Color', [0.5 0.5 0.5]);
+                viscircles([0 0], i*165/4, 'Color', [0.7 0.7 0.7], 'LineWidth', 0.2);
+                line([-165*cos(theta) 165*cos(theta)], [165*sin(theta) -165*sin(theta)], 'Color', [0.7 0.7 0.7], 'LineWidth', 0.2);
                 hold on
             end
+            %}
             %viscircles([0 0], 165, 'Color', 'k', 'LineWidth', 1);
             hold on
 
             %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
             [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
-            %scatter(x, y, 100, 'k', '*', 'LineWidth', 1);
-            h = viscircles([x y], 7, 'Color', 'k');
-            fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            scatter(x, y, 30, 'MarkerEdgeColor', 'w', 'MarkerFaceColor', 'w');
+            %h = viscircles([x y], 7, 'Color', 'none');
+            %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'w');
             
-            [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1)+40);
-            scatter(x, y, 300, 'b', '.', 'LineWidth', 1);
-
             for i = 1:obj.m
                     obj.Paths(num,i).plotPath(1);
                     hold on
             end
-
+            
+            [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1)+40);
+            scatter(x, y, 30, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', plottingcolor);
 
             %[x, y] = pol2cart(pi/2*(obj.States(num,2)+1) + pi/4, 65*(obj.States(num1,1)+1) + 40);
             %[x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1) + 40);
@@ -102,7 +104,7 @@ classdef RepeatingResults < handle
             %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
 
             axis square
-            %set(gca,'XColor', 'none','YColor','none')
+            set(gca,'XColor', 'none','YColor','none')
             %set(gca, 'Color', 'None');
             %set(gcf, 'Color', 'None');
             if nargin == 4
