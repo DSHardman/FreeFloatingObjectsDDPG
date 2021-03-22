@@ -80,9 +80,12 @@ classdef RepeatingResults < handle
 
             %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
             [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
-            scatter(x, y, 150, 'k', '*', 'LineWidth', 3);
-            %h = viscircles([x y], 7, 'Color', 'k');
-            %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            %scatter(x, y, 100, 'k', '*', 'LineWidth', 1);
+            h = viscircles([x y], 7, 'Color', 'k');
+            fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            
+            [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1)+40);
+            scatter(x, y, 300, 'b', '.', 'LineWidth', 1);
 
             for i = 1:obj.m
                     obj.Paths(num,i).plotPath(1);
@@ -99,7 +102,7 @@ classdef RepeatingResults < handle
             %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
 
             axis square
-            set(gca,'XColor', 'none','YColor','none')
+            %set(gca,'XColor', 'none','YColor','none')
             %set(gca, 'Color', 'None');
             %set(gcf, 'Color', 'None');
             if nargin == 4

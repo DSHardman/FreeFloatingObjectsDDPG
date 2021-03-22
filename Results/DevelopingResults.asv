@@ -69,7 +69,6 @@ classdef DevelopingResults < handle
         end
         
         function plotOverlay(obj, num, visible, savename)
-            figure()
             for i = 1:4
                 theta = (i-1)*pi/4;
                 viscircles([0 0], i*165/4, 'Color', [0.5 0.5 0.5], 'LineWidth', 0.5);
@@ -81,9 +80,9 @@ classdef DevelopingResults < handle
 
             %[x, y] = pol2cart(pi/2*(obj.States(num,3)+1) + pi/4, 165);
             [x, y] = pol2cart(-(pi/2*(obj.States(num,3)+1)), 165);
-            scatter(x, y, 150, 'k', '*', 'LineWidth', 3);
-            %h = viscircles([x y], 7, 'Color', 'k');
-            %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            scatter(x, y, 100, 'k', '*', 'LineWidth', 1);
+            [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1)+40);
+            scatter(x, y, 300, 'k', '.', 'LineWidth', 1);
 
             for i = 1:obj.m
                     obj.Paths(num,i).plotPath(1);
@@ -103,7 +102,7 @@ classdef DevelopingResults < handle
             set(gca,'XColor', 'none','YColor','none')
             %set(gca, 'Color', 'None');
             %set(gcf, 'Color', 'None');
-            if nargin == 3
+            if nargin == 4
                 exportgraphics(gcf, "AutosavedFigures/"+...
                     savename+string(num)+".eps", 'ContentType',...
                     'vector', 'BackgroundColor', 'none');
@@ -114,8 +113,13 @@ classdef DevelopingResults < handle
         end
         
         function plotOverlays(obj, visible, savename)
+            figure();
             for i = 1:obj.n
-                obj.plotOverlay(i, visible, savename);
+                if nargin == 3
+                    obj.plotOverlay(i, visible, savename);
+                else
+                    obj.plotOverlay(i, visible);
+                end
             end
         end
         
@@ -123,7 +127,7 @@ classdef DevelopingResults < handle
             figure();
             for i = 1:5
                 subplot(1,5,i);
-                obj.plotOverlays(1);
+                obj.plotOverlay(i, 1);
             end
         end
        

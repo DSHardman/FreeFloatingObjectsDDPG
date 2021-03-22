@@ -179,13 +179,14 @@ classdef ShapeResults < handle
                     'CellLabelColor','none');
                 %xlabel('\theta_{start}');
                 %ylabel('\theta_{target}');
-                %title(strcat(string(2*(i-1)/rbins - 1), " < r < ", string(2*i/rbins - 1)))
+                title(strcat(string(2*(i-1)/rbins - 1), " < r < ", string(2*i/rbins - 1)))
                 colormap parula
                 caxis(limits);
                 Ax = gca;
                 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
                 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
             end
+            subplot(2,rbins, 1); ylabel('Predicted');
             
             %Actual
             thetabins = 6;
@@ -217,6 +218,7 @@ classdef ShapeResults < handle
                 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));
                 Ax.YDisplayLabels = nan(size(Ax.YDisplayData));
             end
+            subplot(2,rbins, rbins+1); ylabel('Measured');
             
             %ylabel('\theta_{target}');
             %xlabel('\theta_{start}');
