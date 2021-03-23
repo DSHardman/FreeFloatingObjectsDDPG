@@ -1,4 +1,4 @@
-function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
+function cost = i180CostFunction(x)%, filename, cam,cameraParams,worldcentre,imagecentre)
     global cam cameraParams worldcentre imagecentre
     preview(cam)
     params = Parameters(x.xamp, x.xfreq, x.xphase,...
@@ -12,7 +12,7 @@ function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
 
     %saving
     sv = 0; %save
-    filename = 'atest5';
+    filename = 'CHANGETHIS';
    
 
     %%
@@ -78,13 +78,11 @@ function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
     results = results(find(results(:,1),1,'first'):find(results(:,1),1,'last'), :);
     
     %calculate cost function
-    if outflag %if we stopped at the outer edge, pretend we ran
-                % for the whole two minutes
-        results(end,1) = 120;
-    end
 
     mindist = NaN;
-    [xdes, ydes] = pol2cart(5*pi/4,165);
+    %[xdes, ydes] = pol2cart(5*pi/4,165);
+    %[xdes, ydes] = pol2cart(pi/4,165);
+    [xdes, ydes] = pol2cart(3*pi/4,165);
     for i = 1:size(results,1)
         [xcurrent, ycurrent] = pol2cart(results(i,3),results(i,2));
         dist = sqrt((xdes-xcurrent)^2+(ydes-ycurrent)^2);
@@ -92,9 +90,12 @@ function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
     end
     
     
-    if (size(results, 1) < 5)
+    if (size(results, 1) < 3)
         cost = 500;
     else
+        if ~outflag
+            results(end,1) = 120;
+        end
         mindist = min([mindist 3000]);
         cost = results(end,1) + mindist;
     end
@@ -107,7 +108,7 @@ function cost = i180CostFunction(x)%, cam,cameraParams,worldcentre,imagecentre)
     pause(2);
     drawnow('update')
     
-    ResetPosition(90,3*pi/4,cam,cameraParams,worldcentre,imagecentre) %reset floating object
+    %ResetPosition(90,pi/4,cam,cameraParams,worldcentre,imagecentre) %reset floating object
     
     %optionally save results
     if sv
