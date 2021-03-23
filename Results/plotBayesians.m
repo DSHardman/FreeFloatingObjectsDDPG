@@ -1,68 +1,84 @@
-subplot = @(m,n,p)subtightplot(m,n,p,[0.05 0.05], [0.05 0.05], [0.05 0.05]);
+subplot = @(m,n,p)subtightplot(m,n,p,[0.02 0.02], [0.15 0.05], [0.1 0.1]);
 
 global plottingcolor
-plottingcolor = 'r';
+plottingcolor = 1/255*[217 95 2];
 
+stdroll = 200;
+meanroll = 100;
+splinelength = 10;
+
+figure('Position', [244.2000  397.0000  996.8000  462.0000]);
+%[117 112 179]
+colors = 1/255*[[100 100 100]; [0 0 0]; [10 110 251]];%[117 112 179]];%[252 141 98]];%[217 95 2]];
+
+%% path plots
 subplot(2,3,1);
-plot(bayes0.ObjectiveMinimumTrace)
-hold on
-
-ob_std = movstd(bayes0.ObjectiveTrace, 100);
-inBetween = [[smooth(bayes0.ObjectiveTrace,100)+ob_std].',...
-    [flipud(smooth(bayes0.ObjectiveTrace,100)-ob_std)].'];
-fill([1:length(ob_std), fliplr(1:length(ob_std))], inBetween,...
-    [0.7 0.7 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
-
-plot(smooth(bayes0.ObjectiveTrace,100));
-xlim([0 700]); ylim([0 500]);
-title('0^o: Task ii');
-box off
+stringbase = 'C:\Users\dshar\OneDrive - University of Cambridge\Documents\PhD\Water Control\Results\Motions\Bayesian\0\Bayes0_3_';
+bayes_state = [-3/13;-1;-1];
+VisualiseBayesian
+title('0^o');
 
 subplot(2,3,2);
-plot(bayes90.ObjectiveMinimumTrace)
-hold on
-
-ob_std = movstd(bayes90.ObjectiveTrace, 100);
-inBetween = [[smooth(bayes90.ObjectiveTrace,100)+ob_std].',...
-    [flipud(smooth(bayes90.ObjectiveTrace,100)-ob_std)].'];
-fill([1:length(ob_std), fliplr(1:length(ob_std))], inBetween,...
-    [0.7 0.7 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
-
-plot(smooth(bayes90.ObjectiveTrace,100));
-xlim([0 700]); ylim([0 500]);
-title('90^o: Task iv');
-box off
-set(gca,'YTick', []);
+stringbase = 'C:\Users\dshar\OneDrive - University of Cambridge\Documents\PhD\Water Control\Results\Motions\Bayesian\90\Bayes90_3_';
+bayes_state = [-3/13;-1;0];
+VisualiseBayesian
+title('90^o');
 
 subplot(2,3,3);
-plot(bayes180.ObjectiveMinimumTrace)
-hold on
+stringbase = 'C:\Users\dshar\OneDrive - University of Cambridge\Documents\PhD\Water Control\Results\Motions\Bayesian\180\Bayes180_3_';
+bayes_state = [-3/13;-0.85;1];
+VisualiseBayesian
+title('180^o');
 
-ob_std = movstd(bayes180.ObjectiveTrace, 100);
-inBetween = [[smooth(bayes180.ObjectiveTrace,100)+ob_std].',...
-    [flipud(smooth(bayes180.ObjectiveTrace,100)-ob_std)].'];
-fill([1:length(ob_std), fliplr(1:length(ob_std))], inBetween,...
-    [0.7 0.7 0.7], 'EdgeColor', 'None', 'FaceAlpha', 0.4);
-
-plot(smooth(bayes180.ObjectiveTrace,100));
-xlim([0 700]); ylim([0 500]);
-title('180^o: Task v');
-
-box off
-set(gca,'YTick', []);
-
+%% 0 deg progress
 subplot(2,3,4);
-stringbase = 'C:\Users\dshar\Downloads\atest';
-VisualiseBayesian
 
+plotprogress(bayes0, stdroll, meanroll, splinelength, colors);
+ylabel('Cost Function');
+set(gca, 'LineWidth', 2, 'Fontsize', 12);
 
+%% 90 deg progress
 subplot(2,3,5);
-stringbase = 'C:\Users\dshar\Downloads\atest';
-VisualiseBayesian
+plot(nan, 'Color', colors(3,:), 'LineWidth', 2);
+hold on
+plot(nan, 'Color', colors(2,:), 'LineWidth', 2);
 
+plotprogress(bayes90, stdroll, meanroll, splinelength, colors);
+
+set(gca,'YTickLabels', []);
+
+xlabel('Iterations');
+set(gca,'LineWidth', 2, 'Fontsize', 12);
+legend('Minimum', 'Average', 'Orientation', 'horizontal', 'Location', 'n');
+legend boxoff
+
+%% 180 deg progress
 subplot(2,3,6);
-stringbase = 'C:\Users\dshar\Downloads\Bayes180_3_test';
-VisualiseBayesian
+
+plotprogress(bayes180, stdroll, meanroll, splinelength, colors);
+
+set(gca,'YTickLabel', []);
+set(gca, 'LineWidth', 2, 'Fontsize', 12);
 
 %sgtitle('Bayesian Optimisations');
 set(gcf, 'Color', 'w');
+
+function plotprogress(bayesin, stdroll, meanroll, splinelength, colors)
+    finalpoint = bayesin.NumObjectiveEvaluations;
+    
+    sb = smooth(bayesin.ObjectiveTrace,meanroll);
+    sb = interp1(1:length(sb), sb(1:end), 1:splinelength:finalpoint, 'spline');
+    
+    ob_std = movstd(bayesin.ObjectiveTrace, stdroll);
+    ob_std = interp1(1:length(ob_std), ob_std(1:end), 1:splinelength:finalpoint, 'spline');
+    
+    inBetween = [sb+ob_std, fliplr(sb-ob_std)];
+    fill([1:splinelength:finalpoint, fliplr(1:splinelength:finalpoint)], inBetween,...
+        colors(1,:), 'EdgeColor', 'None', 'FaceAlpha', 0.4); hold on
+
+    plot(1:splinelength:finalpoint, sb, 'Color',colors(2,:), 'LineWidth', 2);
+    
+    plot(bayesin.ObjectiveMinimumTrace, 'Color', colors(3,:), 'LineWidth', 2);
+    xlim([0 700]); ylim([0 500]);
+    box off
+end

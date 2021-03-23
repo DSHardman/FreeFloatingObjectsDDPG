@@ -93,7 +93,7 @@ classdef RepeatingResults < handle
             end
             
             [x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1)+40);
-            scatter(x, y, 30, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', plottingcolor);
+            scatter(x, y, 30, 'MarkerEdgeColor', 'w', 'MarkerFaceColor', plottingcolor);
 
             %[x, y] = pol2cart(pi/2*(obj.States(num,2)+1) + pi/4, 65*(obj.States(num1,1)+1) + 40);
             %[x, y] = pol2cart(-(pi/2*(obj.States(num,2)+1)), 65*(obj.States(num,1)+1) + 40);

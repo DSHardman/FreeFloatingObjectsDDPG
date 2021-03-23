@@ -212,7 +212,7 @@ classdef ShapeResults < handle
                     1-(1/thetabins):-(2/thetabins):-1+(1/thetabins),...
                     flipud(rewarddata(:,:,i)), 'ColorbarVisible','off',...
                     'GridVisible','off', 'CellLabelColor','none');
-                colormap parula
+                colormap winter
                 caxis(limits);
                 Ax = gca;
                 Ax.XDisplayLabels = nan(size(Ax.XDisplayData));

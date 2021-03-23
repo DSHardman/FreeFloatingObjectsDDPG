@@ -3,8 +3,6 @@ savename = 'test';
 
 global plottingcolor
 
-bayes_state = [0;-0.8;-1];
-
 %{
 for i = 1:4
     theta = (i-1)*pi/4;
@@ -26,25 +24,21 @@ partcircle(x, y, 12, [-(pi/2*(bayes_state(3)+1))+pi/2 -(pi/2*(bayes_state(3)+1))
 %h = viscircles([x y], 7, 'Color', 'k');
 %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
 
-for i  = 1:10
-    try
-        %load('C:\Users\dshar\Downloads\atest' + string(i) + '.mat');
-        load('C:\Users\dshar\Downloads\Bayes180_1_test' + string(i) + '.mat');
-        %load(stringbase + string(i) + '.mat');
-        [x, y] = pol2cart(-(results(:,3)-pi/4), min(results(:,2),165));
-        p = plot(smooth(x,10), smooth(y,10), 'LineWidth', 1.5, 'Color', plottingcolor);
-        p.Color(4) = 0.7; 
-        c = get(p,'Color');
-        scatter(x(end), y(end), 20, c, '*', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
-        %h = viscircles([0 0], 20, 'Color', 'k');
-        %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
-        hold on
-    catch
-    end    
+for i  = 1:5
+    load(stringbase + string(i) + '.mat');
+    [x, y] = pol2cart(-(results(:,3)-pi/4), min(results(:,2),165));
+    p = plot(smooth(x,10), smooth(y,10), 'LineWidth', 1.5, 'Color', plottingcolor);
+    p.Color(4) = 0.5; 
+    c = get(p,'Color');
+    scatter(x(end), y(end), 20, c, '*', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
+    %h = viscircles([0 0], 20, 'Color', 'k');
+    %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+    hold on
 end
 
-%[x, y] = pol2cart(-(pi/2*(bayes_state(2)+1)), 65*(bayes_state(1)+1) + 40);
-%scatter(x, y, 150, 'k', 'x', 'LineWidth', 3)
+[x, y] = pol2cart(-(pi/2*(bayes_state(2)+1)), 65*(bayes_state(1)+1) + 40);
+scatter(x, y, 30, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', plottingcolor);
+
 
 axis square
 set(gca,'XColor', 'none','YColor','none')
