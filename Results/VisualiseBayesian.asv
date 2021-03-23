@@ -3,7 +3,7 @@ savename = 'test';
 
 global plottingcolor
 
-bayes_state = [0;-0.8;-1];
+bayes_state = [0;-0.8;1];
 
 %{
 for i = 1:4
@@ -18,11 +18,11 @@ end
 %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
     
 %viscircles([0 0], 165, 'Color', 'k');
-partcircle(0,0,165, [-(pi/2*(bayes_state(3)+1))+0.08 -(pi/2*(bayes_state(3)+1))-0.08]); hold on
+circle(0,0,165, [0 2*pi]); hold on
 
-[x, y] = pol2cart(-(pi/2*(bayes_state(3)+1)), 165);
+[x, y] = pol2cart(-(pi/2*(bayes_state(3))), 165);
 %scatter(x, y, 30, 'MarkerEdgeColor', 'w', 'MarkerFaceColor', 'w');
-partcircle(x, y, 12, [-(pi/2*(bayes_state(3)+1))+pi/2 -(pi/2*(bayes_state(3)+1))-pi/2]);
+circle(x, y, 12, [-(pi/2*(bayes_state(3)))+pi/2 -(pi/2*(bayes_state(3)))-pi/2]);
 %h = viscircles([x y], 7, 'Color', 'k');
 %fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
 
@@ -56,18 +56,14 @@ if save
 end
 
 function circle(x,y,r)
-ang=0:0.01:2*pi;
+ang=0:0.01:2*pi
 xp=r*cos(ang);
 yp=r*sin(ang);
 plot(x+xp,y+yp, 'Color', [0.5 0.5 0.5], 'LineWidth', 1);
 end
 
 function partcircle(x,y,r, angles)
-if mod(angles(2),2*pi) < mod(angles(1),2*pi)
-    ang=mod(angles(1),2*pi):0.01:mod(angles(2),2*pi)+2*pi;
-else
-    ang=mod(angles(1),2*pi):0.01:mod(angles(2),2*pi);
-end
+ang=mod(angles(1),2*pi):0.01:mod(angles(2),2*pi); 
 xp=r*cos(ang);
 yp=r*sin(ang);
 plot(x+xp,y+yp, 'Color', [0.5 0.5 0.5], 'LineWidth', 1);

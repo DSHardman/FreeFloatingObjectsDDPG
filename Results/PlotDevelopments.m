@@ -1,4 +1,7 @@
-global plottingcolor
+global plottingcolor plottingstyle
+plottingstyle = '-';
+
+figure('Position', [300 300 900 500]);
 
 subplot = @(m,n,p)subtightplot(m,n,p,[0.05 0.001], [0.005 0.05], [0.01 0.01]);
 
