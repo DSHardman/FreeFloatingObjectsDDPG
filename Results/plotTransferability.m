@@ -78,11 +78,18 @@ subplot(8,7,23); title('iii', 'Color', 'k');
 subplot(8,7,27); title('iv', 'Color', 'k');
 subplot(8,7,44); title('v', 'Color', 'k');
 
+%{
 subplot(8,7,[47,48,49,54,55,56]);
 im = imread('ColourKey.png');
 imshow(im);
-
+%}
 set(gcf, 'Color', 'w');
+
+%{
+exportgraphics(gcf, "AutosavedFigures/"+...
+    "Transferability"+".eps", 'ContentType',...
+    'vector', 'BackgroundColor', 'none');
+%}
 
 function circle(x,y,r)
 ang=0:0.01:2*pi; 

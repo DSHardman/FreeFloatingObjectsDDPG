@@ -55,6 +55,29 @@ classdef TrackedPath
             end
         end
         
+        function animatePath(obj)
+            clr = 1/255*[255 127 0];
+            h = viscircles([0 0], 165, 'Color', 'None'); hold on
+            fill(h.Children(1).XData(1:end-1), h.Children(1).YData(1:end-1), 'k');
+            axis square
+            [theta, r] = cart2pol(obj.xvec, obj.yvec);
+            [x, y] = pol2cart(-(theta-pi/4), min(r, 165));
+
+            plot(smooth(x(1:2),10), smooth(y(1:2),10), 'LineWidth', 4, 'Color', clr);
+            hold on
+            scatter(x(1), y(1), 2000, clr, '.', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
+            set(gcf, 'Color', 'w');
+            set(gca, 'YTick', [], 'XTick', [], 'YColor', 'none', 'XColor', 'none');
+            pause();
+            for i = 10:length(x)
+            plot(smooth(x(1:i),10), smooth(y(1:i),10), 'LineWidth', 1, 'Color', clr);
+            scatter(x(i), y(i), 2000, clr, '.', 'LineWidth', 1, 'MarkerEdgeAlpha', 0.5)
+            children = get(gca, 'children');
+            delete(children(end-3:end-2));
+            pause(0.001);
+            end
+        end
+        
         function length = getLength(obj)
             length = 0;
             for i = 1:obj.n - 1

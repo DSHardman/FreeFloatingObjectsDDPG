@@ -1,11 +1,12 @@
 breakpoints = [1448 1946 2481];
+%breakpoints = [];
 ylims = [-2 3];
 finalpoint = length(rewards);
 xlims = [0 finalpoint];
 save = 0;
 savename = 'training';
 
-%rewards = 1.15*rewards; %only to scale reward function 2
+rewards = 1.15*rewards; %only to scale reward function 2
 
 meanroll = 500;
 stdroll = 500;
