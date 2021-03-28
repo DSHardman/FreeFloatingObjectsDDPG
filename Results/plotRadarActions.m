@@ -1,24 +1,55 @@
-figure();
-subplot(2,3,1);
-spider_plot(table2array(bayes0.XAtMinObjective), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Bayesian Task ii');
-text(-0.25,0,'DRAFT');
-subplot(2,3,2);
-spider_plot(table2array(bayes90.XAtMinObjective), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Bayesian Task iv');
-text(-0.25,0,'DRAFT');
-subplot(2,3,3);
-spider_plot(table2array(bayes180.XAtMinObjective), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Bayesian Task v');
+subplot = @(m,n,p)subtightplot(m,n,p,[0.01 0.01], [0.05 0.1], [0.01 0.01]);
+save = 0;
 
-subplot(2,3,4);
-spider_plot(Circle20.Actions(2,:), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Trained Task ii');
-subplot(2,3,5);
-spider_plot(Circle20.Actions(4,:), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Trained Task iv');
-subplot(2,3,6);
-spider_plot(Circle20.Actions(5,:), 'FillOption', 'on', 'AxesLabels', 'none', 'AxesDisplay', 'none');
-title('Trained Task v');
+figure('Position', 1000*[0.1186 0.3874 1.1968 0.4716]);
 
-sgtitle('Proposed Actions');
+fs = 12; %font size
+
+subplot(1,3,1);
+radar([-3/13; -1; -1], bayes0, saved_agent, fs, 0);
+title('0^o', 'FontSize', fs);
+hLeg = legend('1', '2', 'Location', 'southoutside', 'FontSize', fs,...
+    'Orientation', 'horizontal');
+set(hLeg,'visible','off');
+
+subplot(1,3,2);
+radar([-3/13; -1; 0], bayes90, saved_agent, fs, 1);
+title('90^o', 'FontSize', fs);
+hLeg = legend('1', '2', 'Location', 'southoutside', 'FontSize', fs,...
+    'Orientation', 'horizontal');
+set(hLeg,'visible','off');
+
+subplot(1,3,3);
+radar([-3/13; -1; 1], bayes180, saved_agent, fs, 0);
+title('180^o', 'FontSize', fs);
+legend('Trained Agent', 'Bayesian Optimisation',...
+    'Location', 'southoutside', 'Orientation', 'horizontal',...
+    'FontSize', fs);
+legend boxoff
+
+if save
+    exportgraphics(gcf, "AutosavedFigures/"+...
+        "spiderplots"+".eps", 'ContentType',...
+        'vector', 'BackgroundColor', 'none');
+end
+
+function radar(state, bayesian, saved_agent, fs, labels)
+    [~,ind] = sort(bayesian.ObjectiveTrace, 'ascend');
+    if labels
+    spider_plot([cell2mat(saved_agent.getAction(state)).';...
+        table2array(bayesian.XTrace(ind(1),:))],...
+        'FillOption', 'on', 'AxesDisplay', 'one',...
+        'AxesLimits', [-ones(1,11); ones(1,11)],...
+        'AxesLabelsEdge', 'none', 'Marker', '.', 'MarkerSize', 20,...
+        'Color', [0 0 0; 0.4 0.2 0.8], 'LabelFontSize', fs,...
+        'AxesLabels', {'A_x' 'f_x' '\phi_x' 'A_y' 'f_y' '\phi_y'...
+        'A_z' 'f_z' 'd' '\theta_x' '\theta_y'});
+    else
+    spider_plot([cell2mat(saved_agent.getAction(state)).';...
+        table2array(bayesian.XTrace(ind(1),:))],...
+        'FillOption', 'on', 'AxesDisplay', 'one',...
+        'AxesLimits', [-ones(1,11); ones(1,11)],...
+        'AxesLabels', 'none', 'Marker', '.', 'MarkerSize', 20,...
+        'Color', [0 0 0; 0.4 0.2 0.8]);
+    end
+end

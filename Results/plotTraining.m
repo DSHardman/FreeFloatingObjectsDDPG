@@ -6,7 +6,7 @@ xlims = [0 finalpoint];
 save = 0;
 savename = 'training';
 
-rewards = 1.15*rewards; %only to scale reward function 2
+%rewards = 1.15*rewards; %only to scale reward function 2
 
 meanroll = 500;
 stdroll = 500;
@@ -62,14 +62,14 @@ breakpoints = [xlims(1) breakpoints];
 if length(breakpoints) > 1
     for i = 1:length(breakpoints)
         line([breakpoints(i) breakpoints(i)], [-2 -1.5], 'color', 'k', 'LineWidth', 2);
-        text(breakpoints(i)+30, ylims(1)+0.4, char(64+i), 'FontSize', 15);
+        text(breakpoints(i)+30, ylims(1)+0.4, char(64+i), 'FontSize', 25);
     end
 end
 
 box off
 ylim(ylims);
 xlim(xlims);
-set(gca, 'FontSize', 15, 'LineWidth',2);
+set(gca, 'FontSize', 27, 'LineWidth',2);
 xlabel('Iterations');
 ylabel('Reward');
 legend(["Predicted" "Actual"], 'Orientation', 'Horizontal', 'Location', 'nw');
