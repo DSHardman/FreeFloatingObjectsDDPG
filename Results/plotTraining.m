@@ -3,8 +3,9 @@ breakpoints = [1448 1946 2481];
 ylims = [-2 3];
 finalpoint = length(rewards);
 xlims = [0 finalpoint];
-save = 1;
-savename = 'training1';
+save = 0;
+savepng = 1;
+savename = 'RewardFunction2';
 
 %rewards = 1.15*rewards; %only to scale reward function 2
 
@@ -81,4 +82,9 @@ if save
     exportgraphics(gcf, "AutosavedFigures/"+...
         savename+".eps", 'ContentType',...
         'vector', 'BackgroundColor', 'none');
+end
+
+if savepng
+    exportgraphics(gcf, "AutosavedFigures/"+...
+        savename+".png", 'BackgroundColor', 'none');
 end
