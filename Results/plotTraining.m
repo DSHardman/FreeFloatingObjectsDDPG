@@ -3,8 +3,8 @@ breakpoints = [1448 1946 2481];
 ylims = [-2 3];
 finalpoint = length(rewards);
 xlims = [0 finalpoint];
-save = 0;
-savename = 'training';
+save = 1;
+savename = 'training1';
 
 %rewards = 1.15*rewards; %only to scale reward function 2
 
@@ -14,14 +14,16 @@ splinelength = 30;
 
 colors = 1/255*[[217 95 2];... %actual std
     [217 95 2];... %actual mean
-    [117 112 179];... %predicted std
-    [117 112 179]]; %predicted mean
+    [52 116 189];...
+    [52 116 189]];
+    %[117 112 179];... %predicted std
+    %[117 112 179]]; %predicted mean
 
-figure('Position', [300 200 1200 600])
+figure('Position', [300 108 1200 692])
 
-plot(nan,'Color',colors(4,:),'LineWidth',2);
+plot(nan,'Color',colors(4,:),'LineWidth',5);
 hold on
-plot(nan,'Color',colors(2,:),'LineWidth',2);
+plot(nan,'Color',colors(2,:),'LineWidth',5);
 
 sr = smooth(rewards,meanroll);
 sr = interp1(1:length(sr), sr(1:end), 1:splinelength:finalpoint, 'spline');
@@ -51,25 +53,25 @@ fill([1:splinelength:finalpoint, fliplr(1:splinelength:finalpoint)], inBetween,.
 
 %plot(sq(1:end-1),'Color',colors(4,:),'LineWidth',4);
 plot(1:splinelength:finalpoint, sq,...
-    'Color',colors(4,:),'LineWidth',4);
+    'Color',colors(4,:),'LineWidth',5);
 
 %plot(sq(1:end-1),'Color',colors(4,:),'LineWidth',4);
 plot(1:splinelength:finalpoint, sr,...
-    'Color',colors(2,:),'LineWidth',4);
+    'Color',colors(2,:),'LineWidth',5);
 
 
 breakpoints = [xlims(1) breakpoints];
 if length(breakpoints) > 1
     for i = 1:length(breakpoints)
-        line([breakpoints(i) breakpoints(i)], [-2 -1.5], 'color', 'k', 'LineWidth', 2);
-        text(breakpoints(i)+30, ylims(1)+0.4, char(64+i), 'FontSize', 25);
+        line([breakpoints(i) breakpoints(i)], [-2 -1.5], 'color', 'k', 'LineWidth', 4);
+        %text(breakpoints(i)+30, ylims(1)+0.4, char(64+i), 'FontSize', 25);
     end
 end
 
 box off
 ylim(ylims);
 xlim(xlims);
-set(gca, 'FontSize', 27, 'LineWidth',2);
+set(gca, 'FontSize', 30, 'LineWidth',4);
 xlabel('Iterations');
 ylabel('Reward');
 legend(["Predicted" "Actual"], 'Orientation', 'Horizontal', 'Location', 'nw');
