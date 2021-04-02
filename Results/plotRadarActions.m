@@ -1,27 +1,38 @@
-subplot = @(m,n,p)subtightplot(m,n,p,[0.01 0.01], [0.05 0.1], [0.01 0.01]);
+subplot = @(m,n,p)subtightplot(m,n,p,[0.01 0.05], [0.05 0.1], [0.01 0.01]);
 save = 0;
 
 figure('Position', 1000*[0.1186 0.3874 1.1968 0.4716]);
 
-fs = 12; %font size
+fs = 16; %font size
 
 subplot(1,3,1);
 radar([-3/13; -1; -1], bayes0, saved_agent, saved_agent2, fs, 0);
-title('0^o', 'FontSize', fs);
+th = title('0^o', 'FontSize', fs);
+titlePos = get(th , 'position');
+titlePos(2) = titlePos(2)+0.05;
+set(th , 'position' , titlePos);
 hLeg = legend('1', '2', 'Location', 'southoutside', 'FontSize', fs,...
     'Orientation', 'horizontal');
 set(hLeg,'visible','off');
 
 subplot(1,3,2);
 radar([-3/13; -1; 0], bayes90, saved_agent, saved_agent2, fs, 1);
-title('90^o', 'FontSize', fs);
+th = title('90^o', 'FontSize', fs);
+titlePos = get(th , 'position');
+titlePos(2) = titlePos(2)+0.05;
+set(th , 'position' , titlePos);
+
+
 hLeg = legend('1', '2', 'Location', 'southoutside', 'FontSize', fs,...
     'Orientation', 'horizontal');
 set(hLeg,'visible','off');
 
 subplot(1,3,3);
 radar([-3/13; -1; 1], bayes180, saved_agent, saved_agent2, fs, 0);
-title('180^o', 'FontSize', fs);
+th = title('180^o', 'FontSize', fs);
+titlePos = get(th , 'position');
+titlePos(2) = titlePos(2)+0.05;
+set(th , 'position' , titlePos);
 legend('Trained Agent 1', 'Trained Agent 2', 'Bayesian Optimisation',...
     'Location', 'southoutside', 'Orientation', 'horizontal',...
     'FontSize', fs);
