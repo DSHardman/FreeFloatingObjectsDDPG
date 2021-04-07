@@ -1,3 +1,5 @@
+% for preliminary bayesian tests, moving only radially
+
 function cost = rCostFunction(x)
 
     global cam cameraParams worldcentre imagecentre

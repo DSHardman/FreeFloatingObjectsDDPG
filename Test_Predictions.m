@@ -1,3 +1,6 @@
+% plot critic output as target theta is varied for a given starting
+% position
+
 starting_r = -1; %between -1 & 1
 starting_theta = 0;
 

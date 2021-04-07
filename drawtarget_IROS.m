@@ -1,3 +1,4 @@
+% draw target position as small blue dot onto the live camera feed
 function drawtarget_IROS(State, cam, cameraParams, worldcentre, imagecentre)
         
         [x, y] = pol2cart(pi/2*(State(3,1)+1)+pi/4, 175);

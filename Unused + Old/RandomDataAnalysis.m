@@ -1,3 +1,6 @@
+% after running long preliminary tests, this converted x y to polar
+% coordinates in 31-151s period
+
 j = 20;
 
 filename = strcat('Motions/Noise/Tracking', string(j), '.mat');

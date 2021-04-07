@@ -1,22 +1,18 @@
-function Reward = reward2_IROS(State, Action, results, outflag)
+% Reward Function for Unused Case B, incorcoratiing energy dependent term
+
+function Reward = reward_UB_IROS(State, Action, results, outflag)
 
     if isempty(results)
         Reward = -1;
         return
     end
-    
-    %sigma_1 = pi/3;
-    %sigma_2 = 50; %changed from attempts 3-4
-    
+
     theta_des = pi/2*(State(3,1)+1) + pi/4;
     
     if outflag
         fprintf('Edge hit\n');
-        %ang = mod(results(end,3),2*pi) - mod(theta_des,2*pi);
-        %Reward = normpdf(ang,0,sigma_1)/normpdf(0,0,sigma_1);
     else
         fprintf('No edge hit\n');
-        %Reward = -1;
     end
     
     nAction = (Action + ones(11,1))/2;
@@ -37,13 +33,8 @@ function Reward = reward2_IROS(State, Action, results, outflag)
     fprintf('Energy: %f, Distance: %f\n', Reward, 3*exp(-3*mindist/165))
     
     Reward = Reward + 3*exp(-3*mindist/165) - 0.75;
-    %Reward = Reward + normpdf(mindist, 0, sigma_2)/normpdf(0,0,sigma_2);
-    
-    
+ 
     if isnan(Reward)
         Reward = -1.25;
     end
-%     else
-%         Reward = Reward + (60 - results(end,1))/240; %add small amount of time dependance
-%     end
 end

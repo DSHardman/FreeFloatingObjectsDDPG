@@ -1,4 +1,7 @@
-function Reward = reward_IROS(State, results, outflag)
+ % Reward Function 2 from paper (Attempts 5-9)
+ % This was the function actually used for analysed results
+
+function Reward = reward_RF2_IROS(State, results, outflag)
 
     if isempty(results)
         Reward = -1;
@@ -6,14 +9,14 @@ function Reward = reward_IROS(State, results, outflag)
     end
     
     sigma_1 = pi/3;
-    sigma_2 = 50; %changed from attempts 3-4
+    sigma_2 = 50;
     
     theta_des = pi/2*(State(3,1)+1) + pi/4;
     
     if outflag
         ang = mod(results(end,3),2*pi) - mod(theta_des,2*pi);
-        %Reward = normpdf(ang,0,sigma_1)/normpdf(0,0,sigma_1);
-        Reward = 2*exp(-3*abs(ang)/(pi/4)); % MAKE THIS EXPONENTIAL
+        Reward = normpdf(ang,0,sigma_1)/normpdf(0,0,sigma_1);
+        %Reward = 2*exp(-3*abs(ang)/(pi/4)); % previous exponential attempt
     else
         fprintf('No edge hit\n');
         Reward = -1;
@@ -28,8 +31,8 @@ function Reward = reward_IROS(State, results, outflag)
     end
     
     mindist = min([mindist 3000])
-    %Reward = Reward + normpdf(mindist, 0, sigma_2)/normpdf(0,0,sigma_2);
-    Reward = Reward + exp(-3*mindist/165); %MAKE THIS EXPONENTIAL
+    Reward = Reward + normpdf(mindist, 0, sigma_2)/normpdf(0,0,sigma_2);
+    %Reward = Reward + exp(-3*mindist/165); % previous exponential attempt
     
     
     if isnan(Reward)

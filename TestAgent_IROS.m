@@ -1,3 +1,7 @@
+% Used to quickly tests agents during testing
+% Can run a small number of tests and plot results, or just simulate the
+% same thing to examine the proposed actions and rewards
+
 %% Real Testing
 
 n = 10;

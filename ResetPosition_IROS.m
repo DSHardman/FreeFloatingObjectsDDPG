@@ -1,5 +1,6 @@
 function ResetPosition_IROS(r_des, theta_des, cam, cameraParams, worldcentre, imagecentre)
     %assuming alignment of axes
+    % Called by reset_IROS
     
     %% locate object
     for i = 1:3

@@ -1,5 +1,6 @@
 function [InitialObservation, LoggedSignal] = reset_IROS(cam, cameraParams, worldcentre, imagecentre)
 % Reset function into a random initial state
+% This calls ResetPosition_IROS
     
     %global cam cameraParams worldcentre imagecentre
     

@@ -100,7 +100,7 @@ function [NextObs,Reward,IsDone,LoggedSignals, results] = step_IROS(Action,Logge
     
     %optionally save results
     if sv
-        matname = strcat('C:\Users\44772\Documents\dsh46WaterControl\Motions\RL\RL',datestr(now,'mm-dd-yyyy HH-MM'),'.mat');
+        matname = strcat('C:\Users\44772\Documents\dsh46WaterControl\Motions\RL\RL',datestr(now,'mm-dd-yyyy HH-MM-SS'),'.mat');
         save(matname, 'results');
     end
     
