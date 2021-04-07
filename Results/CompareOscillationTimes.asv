@@ -1,0 +1,20 @@
+%act = cell2mat(saved_agent.getAction([(-11/13); 0.4; -0.4]));
+act = cell2mat(saved_agent.getAction([(-9/13); 0; 0]));
+%act = cell2mat(saved_agent.getAction([(-5/13); 0.5; 0.8]));
+%act = cell2mat(saved_agent.getAction([(-3/13); -1; 0.8]));
+%act = cell2mat(saved_agent.getAction([(-5/13); 0.5; 0.8]));
+fx = 2.5*(act(2)+1);
+fy = 2.5*(act(5)+1);
+fz = 2.5*(act(8)+1);
+
+%{
+xy = 1/(0.5*(abs(fx-fy)))
+yz = 1/(0.5*(abs(fz-fy)))
+xz = 1/(0.5*(abs(fx-fz)))
+%}
+
+%xy = lcm(fx, fy)
+%yz = lcm(fy, fz)
+%xz = lcm(fx, fz)
+
+plot(1:0.01:1000,sin(2*pi*fx*[1:0.01:1000])+sin(2*pi*fy*[1:0.01:1000])+sin(2*pi*fz*[1:0.01:1000]))
