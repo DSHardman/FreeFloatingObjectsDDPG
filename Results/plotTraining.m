@@ -1,13 +1,16 @@
-breakpoints = [1448 1946 2481];
-%breakpoints = [2383 3111];
+% For training figures in paper
+% Must be run once for each agent
+
+%breakpoints = [2383 3111]; % Reward Function 1
+breakpoints = [1448 1946 2481]; % Reward Function 2
 ylims = [-2 3];
 finalpoint = length(rewards);
 xlims = [0 finalpoint];
 save = 0;
-savepng = 1;
+savepng = 1; % Problems with transparancy when saving as vector file
 savename = 'RewardFunction2';
 
-%rewards = 1.15*rewards; %only to scale reward function 2
+%rewards = 1.15*rewards; %only to scale reward function 1
 
 meanroll = 500;
 stdroll = 500;

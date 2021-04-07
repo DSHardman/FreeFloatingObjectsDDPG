@@ -1,3 +1,6 @@
+% Compares and plots statistics between all shapes.
+% Only used for agent 2481 Testing
+
 rm = zeros(7,1);
 rs = zeros(7,1);
 pm = zeros(7,1);

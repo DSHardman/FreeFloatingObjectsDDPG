@@ -1,3 +1,5 @@
+% Developments figure in paper
+
 global plottingcolor plottingstyle
 plottingstyle = '-';
 

@@ -1,3 +1,6 @@
+% Used for agent 5000: stores results for the same tasks over different
+% points in training (e.g. agents 1000, 3000, and 5000)
+
 classdef DevelopingResults < handle
     properties
         n

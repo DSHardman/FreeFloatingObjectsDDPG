@@ -1,3 +1,5 @@
+% Predict periodicity of flows from the proposed actions
+
 act = cell2mat(saved_agent.getAction([(-11/13); 0.4; -0.4])); % Task i
 %act = cell2mat(saved_agent.getAction([(-9/13); 0; 0])); % Task ii
 %act = cell2mat(saved_agent.getAction([(-5/13); 0.5; 0.8])); % Task iii

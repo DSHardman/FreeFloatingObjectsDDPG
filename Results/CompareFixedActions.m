@@ -1,3 +1,6 @@
+% Compares and plots statistics between proposed, fixed, and random actions.
+% Only used for agent 2481 Testing
+
 rm = zeros(3,1);
 rs = zeros(3,1);
 pm = zeros(3,1);

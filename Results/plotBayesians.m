@@ -1,3 +1,5 @@
+% Bayesian figure in paper - Final version amended by Thomas
+
 subplot = @(m,n,p)subtightplot(m,n,p,[0.02 0.02], [0.15 0.05], [0.1 0.1]);
 
 global plottingcolor

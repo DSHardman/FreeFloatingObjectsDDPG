@@ -1,3 +1,6 @@
+% Class to deal with multiple repetitions of the same tests
+% Used heavily in Agent 5000's testing results
+
 classdef RepeatingResults < handle
     properties
         n

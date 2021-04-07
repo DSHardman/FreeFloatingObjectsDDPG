@@ -1,3 +1,5 @@
+% Results for a series of unconnected tests on the same agent
+
 classdef ShapeResults < handle
     properties
         Title

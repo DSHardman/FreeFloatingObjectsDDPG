@@ -1,3 +1,6 @@
+% Used by all other results classes: stores results in a more manageable
+% format
+
 classdef TrackedPath
     properties
         n

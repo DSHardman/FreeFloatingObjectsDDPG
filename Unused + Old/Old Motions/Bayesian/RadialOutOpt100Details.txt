@@ -1,0 +1,23 @@
+Reset:
+r_des = 50;
+theta_des = pi/2;
+
+Cost function:
+    lambda = 5;
+    sum = 0;
+    for i = 2:size(results,1)
+        sum = sum + (results(i,3)-results(1,3))^2;
+    end
+    cost = results(end,1)...
+        + lambda*(sqrt(sum/size(results,1)));
+    if (size(results, 1) < 5) || cost < 0.4
+        cost = 100;
+    end
+
+results = bayesopt(@rCostFunction,...
+    [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11],...
+    'Verbose',1,...
+    'MaxObjectiveEvaluations',200,...
+    'MaxTime',5*3600,...
+	'OutputFcn',@saveToFile,...
+    'SaveFileName',savename);

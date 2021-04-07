@@ -1,3 +1,6 @@
+% plot heatmaps of an agent's predictions
+% if two agents are passed, heatmaps of the differences are plotted
+
 function heatData(agent, agent2)
     rbins = 5;
     thetabins = 25;

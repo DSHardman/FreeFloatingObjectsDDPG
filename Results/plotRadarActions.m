@@ -1,3 +1,7 @@
+% Radar figure in paper
+
+% Problems with transparency when saving as vector file: png used
+
 subplot = @(m,n,p)subtightplot(m,n,p,[0.01 0.05], [0.05 0.1], [0.01 0.01]);
 save = 0;
 

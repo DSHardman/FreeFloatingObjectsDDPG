@@ -1,3 +1,7 @@
+% Class with properties and methods suitable for agent tests where the
+% starting position has been misreported.
+% Only used for Agent 2481 testing.
+
 classdef MisreportingResults < handle
     properties
         n

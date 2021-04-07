@@ -1,3 +1,5 @@
+% called by plotBayesians in creating paper's Bayesian figure
+
 save = 0;
 savename = 'test';
 

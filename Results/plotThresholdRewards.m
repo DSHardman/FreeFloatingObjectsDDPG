@@ -1,3 +1,6 @@
+% plot frequency with which rewards exceed a given threshold over training
+% never used for any final figures
+
 function plotThresholdRewards(rewards, threshold)
     bools = rewards > threshold;
     rollingvalues = zeros(size(rewards));
