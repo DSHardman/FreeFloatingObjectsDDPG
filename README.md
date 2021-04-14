@@ -18,7 +18,7 @@ Camera calibration must be carried out before BO/DRL methods can be run. This co
 
 ## Bayesian Optimisation
 
-Is run from _BayesianOptimisation.m_, which calls the cost function using a handle to _i180CostFunction.m_, which runs a single iteration, returns a cost, and resets the floating object to its starting position. The reset & run steps are largely identical to those of the DDPG script, described below.
+Is run from _BayesianOptimisation.m_ calling the cost function using a handle to _i180CostFunction.m_. This runs a single iteration, returns a cost, and resets the floating object to its starting position. The reset & run steps are largely identical to those of the DDPG script, described below.
 
 
 
